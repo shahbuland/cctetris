@@ -1,13 +1,10 @@
+#ifndef GRAPHICS_H
+#define GRAPHICS_H
+
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
 #include <string>
-
-struct Color {
-	int r;
-	int g;
-	int b;
-};
 
 // Display can be thought of as a grid of squares
 
@@ -38,3 +35,5 @@ class GameDisplay {
 	// Prints string str at r c
 	void printStr(std::string str, int r, int c);
 };
+
+#endif

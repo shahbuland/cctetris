@@ -2,7 +2,7 @@
 #define BLOCKS_H
 
 #include <vector>
-
+#include <string>
 
 // Class representing all of falling blocks
 // Initially constructed as a 4x4 square
@@ -17,11 +17,9 @@ class Block {
 	// Colour of the block
 	std::string colour;
 	// Position of block
-	bool canFall(Game & game); // used by fall
 	public:
-	Block(std::vector<std::vector<int>> shape, colour);
+	Block(std::vector<std::vector<int>> shape, std::string colour);
 	~Block();
-	void fall(Game & game); // makes block fall if it can fall
-}
+};
 
 #endif

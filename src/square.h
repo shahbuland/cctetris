@@ -6,11 +6,11 @@
 class Square {
 	std::string colour;
 	int r,c; // my position
-	bool canFall(Game & game); // is there a block below me?
 	public:
 	Square(std::string colour, int r, int c);
+	~Square();
 	// No heap allocation, default dtor is enough
-	void fall(Game & game);
-}
+	const std::string get_COLOUR();
+};
 
 #endif

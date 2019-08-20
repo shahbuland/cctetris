@@ -10,7 +10,7 @@ using namespace std;
 const int BOX_WIDTH = 50;
 const int BOX_HEIGHT = 50;
 
-GameDisplay::GameDisplay(int r, int c): height(r), width(c) {
+GameDisplay::GameDisplay(int r, int c): height(r*BOX_HEIGHT), width(c*BOX_WIDTH) {
 	
 	// Init display
 
@@ -35,6 +35,8 @@ GameDisplay::GameDisplay(int r, int c): height(r), width(c) {
 
 	XClearWindow(dis, win);
 	XMapRaised(dis, win);
+
+	model = new Game(r,c);	
 }
 
 GameDisplay::~GameDisplay() {
@@ -71,8 +73,20 @@ void GameDisplay::play() {
 }
 
 void GameDisplay::update() {
-	// Looks through game model
-	return;
+	// iterate through board
+	int rows = model->get_HEIGHT();
+	int cols = model->get_WIDTH();
+	// y-pos will be i*BOX_HEIGHT
+	// x-pos will be i*BOX_WIDTH
+	Square * sqr;
+	for(int i = 0; i < rows; i++) {
+		for(int j = 0; j < cols; j++) {
+			sqr = model->get_SQUARE(i,j);
+			if(sqr) {
+				drawBox(sqr->get_COLOUR(), i*BOX_HEIGHT, j*BOX_WIDTH);
+			}
+		}
+	}	
 }
 
 // Some funcs for colours

@@ -3,16 +3,16 @@
 
 #include <vector>
 #include "action.h"
-#include "block.h"
+#include "blocks.h"
 #include "square.h"
 
-SCORE_FOR_LINE = 10;
+const int SCORE_FOR_LINE = 10;
 
 class Game {
 	std::vector<std::vector<Square*>> board;
 	int HEIGHT, WIDTH;
 	int SCORE;
-	vector<Block*> all_blocks; // list of all blocks for dtor
+	std::vector<Block*> all_blocks; // list of all blocks for dtor
 	Block * active_block; // block currently being acted on by player 
 	bool is_line(int r); // checks if line at row r
 	void shift_down(int r); // shifts every row before r down
@@ -23,6 +23,10 @@ class Game {
 	~Game();
 	void step(Action & a); // in charge of calling fall on active object
 	void fall(int r, int c); // makes square at r,c fall one unit (assumes this is valid)
+	const int get_HEIGHT();
+	const int get_WIDTH();
+	const int get_SCORE();
+	Square * get_SQUARE(int r, int c);
 };
 
 #endif

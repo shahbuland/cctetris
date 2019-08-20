@@ -51,11 +51,6 @@ $(EXE): $(OBJECTS)
 
 $(OBJDIR)%$(OFILES): $(SRCDIR)%$(SFILES)
 	$(info Compile: $<)
-	@if cat $< | grep -q -e "de""lete"; then \
-		echo You are not allowed to use the \"de\
-lete\" operator!; \
-		exit 1; \
-	fi
 	@if cat $< | grep -q -e "TODO"; then \
 		echo Warning: TODO item found \($<\). >&2; \
 	fi

@@ -24,9 +24,9 @@ void Game::shift_down(int r) {
 		board[i] = board[i-1]; // row set to above row
 	}
 	// clear first row (don't actually delete anything inside)
-	for(auto sqr : board[0]) {
-		sqr = nullptr;
-	}
+	for(int i = 0; i < WIDTH; i++) {
+		board[0][i] = nullptr;
+	} 
 }
 
 void Game::check_for_lines() {
@@ -41,7 +41,7 @@ void Game::check_for_lines() {
 Game::Game(int height, int width): HEIGHT(height), WIDTH(width) {
 	// All board positions init to null ptr
 	board.resize(HEIGHT);
-	for(auto & row : board) {
+	for(auto row : board) {
 		row.resize(WIDTH);
 	}	
 	SCORE = 0;
@@ -68,5 +68,11 @@ Game::~Game() {
 Block * Game::spawn_block() {
 	int n = rand() % 7;
 	string blockName = BlockNames[n];
-	active_block = new 	
+	return new Block(BlockShapes[blockName],
+			 BlockColours[blockName]);
 }
+
+const int Game::get_HEIGHT() { return HEIGHT; }
+const int Game::get_WIDTH() { return WIDTH; }
+const int Game::get_SCORE() { return SCORE; }
+const Square * Game::get_SQUARE(int r, int c) { return board[r][c]; }
