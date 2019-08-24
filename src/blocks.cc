@@ -27,8 +27,9 @@ Block::Block(vector<vector<int>> shape, string colour,
 
 // Needs to delete all squares that belong to this block
 Block::~Block() {
+	unset_SQRS();
 	for(auto sqr : mysqrs) {
-		if(sqr) { delete sqr; }
+		delete sqr;
 	}
 }
 
@@ -123,15 +124,6 @@ void Block::move_right() {
 	set_SQRS();
 }
 
-// quick check if point is on board
-bool on_board(int r, int c) {
-	if(r < 0) { return false; }
-	if(c < 0) { return false; }
-	if(r > myconsts.HEIGHT) { return false; }
-	if(c > myconsts.WIDTH) { return false; }
-	return true;
-}
-
 // only clockwise rotation
 void Block::rotate() {
 	// Base off pivot
@@ -170,7 +162,7 @@ void Block::rotate() {
 		c = sqr->get_COL();
 		newr = rp + cp - c;
 		newc = cp - rp + r;
-		if(!on_board(newr, newc)) { set_SQRS(); return; }
+		if(!myconsts.on_board(newr, newc)) { set_SQRS(); return; }
 		if(model->get_SQUARE(newr, newc)) { set_SQRS(); return; }
 	}
 	// Get here, assume valid

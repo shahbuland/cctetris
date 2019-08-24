@@ -19,9 +19,9 @@ bool Game::is_line(int r) {
 void Game::shift_down(int r) {
 	// Assume 0 < r < HEIGHT
 	
-	// first delete r-th row
-	for(auto sqr : board[r]) {
-		if(sqr) { delete sqr; }
+	// first clear r-th row
+	for(int j = 0; j < myconsts.WIDTH; j++) {
+		board[r][j] = nullptr;
 	}
 	for(int i = r; i > 0; i--) {
 		board[i] = board[i-1]; // row set to above row
@@ -115,10 +115,12 @@ const int Game::get_WIDTH() { return WIDTH; }
 const int Game::get_SCORE() { return SCORE; }
 
 Square * Game::get_SQUARE(int r, int c) {
-	 return board[r][c];
+	if(!myconsts.on_board(r,c)) { return nullptr; } 
+	return board[r][c];
 }
 
 void Game::set_SQUARE(int r, int c, Square * sqr) {
+	if(!myconsts.on_board(r,c)) { return; }
 	board[r][c] = sqr;
 }
 

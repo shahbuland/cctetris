@@ -38,5 +38,7 @@ class Constants {
 
 	Constants();
 
+	// global helpers
+	bool on_board(int r, int c);
 };
 #endif

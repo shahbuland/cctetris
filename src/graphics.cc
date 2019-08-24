@@ -47,7 +47,7 @@ GameDisplay::~GameDisplay() {
 	XFreeGC(dis, gc);
 	XDestroyWindow(dis, win);
 	XCloseDisplay(dis);
-	if(model) { delete model; }
+	delete model;
 }
 
 void GameDisplay::play() { 

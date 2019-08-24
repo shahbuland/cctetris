@@ -50,3 +50,11 @@ Constants::Constants() {
 			    {0,1,0,0},
 			    {1,2,1,0}};
 }
+
+bool Constants::on_board(int r, int c) {
+	if(r < 0) { return false; }
+	if(c < 0) { return false; }
+	if(r > HEIGHT) { return false; }
+	if(c > WIDTH) { return false; }
+	return true;
+}
