@@ -20,6 +20,8 @@ class Square {
 	// Step left or right (for player interaction)
 	void left();
 	void right();
+	// rotates about pivot position [r,c]
+	void rotate_about(int r, int c);
 };
 
 #endif

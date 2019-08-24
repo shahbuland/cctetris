@@ -17,10 +17,11 @@ class Game {
 	void shift_down(int r); // shifts every row before r down
 	void check_for_lines(); // checks board for lines, modifies score and shifts down as required
 	Block * spawn_block(); // randomly chooses a block to spawn and creates it
+	bool justSpawned; // useful for checking for gameover
 	public:
 	Game(int height, int width);
 	~Game();
-	void step(Action a); // in charge of calling fall on active object
+	void step(Action a, bool & done); // in charge of calling fall on active object
 	// Obvious getters
 	const int get_HEIGHT();
 	const int get_WIDTH();
@@ -28,6 +29,10 @@ class Game {
 	// Getter and setter for square
 	Square * get_SQUARE(int r, int c);
 	void set_SQUARE(int r, int c, Square * sqr);
+	
+	friend std::ostream & operator<<(std::ostream & out, Game & g);
 };
+
+std::ostream & operator<<(std::ostream & out, Game & g);
 
 #endif

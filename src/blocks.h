@@ -23,7 +23,9 @@ class Block {
 	// My individual squares
 	std::vector<Square*> mysqrs;
 	// Pointer to game master object
-	Game * model;	
+	Game * model;
+	// Square about which rotation happens
+	Square * pivot;	
 	// Some private helpers
 	void set_SQRS(); // Set all my squares on the models board
 	void unset_SQRS(); // Unset all my sqaures on model

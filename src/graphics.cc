@@ -17,6 +17,10 @@ GameDisplay::GameDisplay(int r, int c): height(r*myconsts.BOX_HEIGHT), width(c*m
 	unsigned long black,white;
 
 	dis=XOpenDisplay((char *)0);
+	if(!dis) {
+		cerr << "Error opening display (most likely X11 not setup)" << endl;
+		exit(1);	
+	}
 	screen=DefaultScreen(dis);
 	black=BlackPixel(dis,screen),	/* get color black */
 	white=WhitePixel(dis, screen);  /* get color white */
@@ -43,7 +47,7 @@ GameDisplay::~GameDisplay() {
 	XFreeGC(dis, gc);
 	XDestroyWindow(dis, win);
 	XCloseDisplay(dis);
-	delete model;
+	if(model) { delete model; }
 }
 
 void GameDisplay::play() { 
@@ -70,7 +74,7 @@ void GameDisplay::play() {
 		}
 		if(event.type==ButtonPress) {
 		}
-		model->step(a);
+		model->step(a, done);
 		XClearWindow(dis, win);
 	}
 	delete model;
@@ -104,7 +108,8 @@ unsigned long int GameDisplay::get_colors(const char * color) {
 void GameDisplay::drawBox(string colour, int r, int c) {
 	XSetForeground(dis, gc, get_colors(colour.c_str()));
 	XFillRectangle(dis, win, gc, c, r, myconsts.BOX_WIDTH, myconsts.BOX_HEIGHT);
-	
+	XSetForeground(dis,gc, get_colors("Black"));
+	XDrawRectangle(dis, win, gc, c, r, myconsts.BOX_WIDTH, myconsts.BOX_HEIGHT);	
 }
 
 void GameDisplay::printStr(string str, int r, int c) {

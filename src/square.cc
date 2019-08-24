@@ -19,3 +19,11 @@ void Square::drop() { r++; }
 void Square::left() { c--; }
 
 void Square::right() { c++; }
+
+// rotate follows same method as in blocks.cc
+void Square::rotate_about(int rp, int cp) {
+	int newr = rp + cp - c;
+	int newc = cp - rp + r;
+	r = newr;
+	c = newc;
+}

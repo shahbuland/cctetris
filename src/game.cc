@@ -9,7 +9,7 @@ extern Constants myconsts;
 
 bool Game::is_line(int r) {
 	for(auto sqr : board[r]) {
-		if(sqr == nullptr) { return false; }
+		if(!sqr) { return false; }
 	}
 	return true;
 }
@@ -21,7 +21,7 @@ void Game::shift_down(int r) {
 	
 	// first delete r-th row
 	for(auto sqr : board[r]) {
-		delete sqr;
+		if(sqr) { delete sqr; }
 	}
 	for(int i = r; i > 0; i--) {
 		board[i] = board[i-1]; // row set to above row
@@ -56,11 +56,12 @@ Game::Game(int height, int width): HEIGHT(height), WIDTH(width) {
 Game::~Game() {
 	// Just delete all blocks
 	for(auto block : all_blocks) {
-		delete block;
+		if(block) { delete block; }
 	}
 }
 
 Block * Game::spawn_block() {
+	cout << "Score: " << SCORE << endl;
 	int n = rand() % 7; // which block is used
 	int init_x = rand() % (WIDTH - myconsts.MAX_BLOCK_WIDTH);
 	string blockName = myconsts.BlockNames[n];
@@ -75,23 +76,35 @@ Block * Game::spawn_block() {
 
 // Step function
 
-void Game::step(Action a) {
+void Game::step(Action a, bool & done) {
 	// Before step, if there are new active blocks, spawn one
 	// Then we can always make assumption there is an active block
 	// Before the rest of this method
 	if(!active_block) {
 		active_block = spawn_block();
+		justSpawned = true;
 	}
 	switch(a) {
 		case Action::NONE: break;
-		case Action::ROTATE: break;
+		case Action::ROTATE: active_block->rotate(); break;
 		case Action::MOVE_LEFT: active_block->move_left(); break;
 		case Action::MOVE_RIGHT: active_block->move_right(); break;
 		default: break; // This is in theory never reached
 	}
 	// No matter action, active block must now fall
 	bool did_fall =	active_block->fall();
-	if(!did_fall) { active_block = nullptr; }
+	if(!did_fall) { // if it couldn't fall, either at bottom or game over
+		// check for game over
+		if(justSpawned) {
+			cout << "Game over!" << endl;
+			done = true;
+			return;	
+		}
+		active_block = nullptr;
+		check_for_lines(); 
+	} else {
+		justSpawned = false;
+	}
 }
 
 // Getters and setters
@@ -101,8 +114,25 @@ const int Game::get_WIDTH() { return WIDTH; }
 
 const int Game::get_SCORE() { return SCORE; }
 
-Square * Game::get_SQUARE(int r, int c) { return board[r][c]; }
+Square * Game::get_SQUARE(int r, int c) {
+	 return board[r][c];
+}
 
 void Game::set_SQUARE(int r, int c, Square * sqr) {
 	board[r][c] = sqr;
+}
+
+ostream & operator<<(ostream & out, Game & g) {
+	for(auto row : g.board) {
+		for(auto tile : row) {
+			if(tile) {
+			out << "1" << " ";
+			}
+			else {
+			out << "0" << " ";
+			}
+		}
+		out << endl;
+	}	
+	return out;
 }
