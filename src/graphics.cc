@@ -3,14 +3,14 @@
 #include <string.h>
 #include <iostream>
 #include <unistd.h>
+#include "game.h"
+#include "constants.h"
 
 using namespace std;
 
-// All boxes should have fixed size
-const int BOX_WIDTH = 50;
-const int BOX_HEIGHT = 50;
+extern Constants myconsts;
 
-GameDisplay::GameDisplay(int r, int c): height(r*BOX_HEIGHT), width(c*BOX_WIDTH) {
+GameDisplay::GameDisplay(int r, int c): height(r*myconsts.BOX_HEIGHT), width(c*myconsts.BOX_WIDTH) {
 	
 	// Init display
 
@@ -22,7 +22,7 @@ GameDisplay::GameDisplay(int r, int c): height(r*BOX_HEIGHT), width(c*BOX_WIDTH)
 	white=WhitePixel(dis, screen);  /* get color white */
 
 	win=XCreateSimpleWindow(dis,DefaultRootWindow(dis),0,0,	
-				c, r, 5, white, black);
+				width, height, 5, white, black);
 
 	XSetStandardProperties(dis,win,"Tetris","Tetris",None,NULL,0,NULL);
 
@@ -43,33 +43,37 @@ GameDisplay::~GameDisplay() {
 	XFreeGC(dis, gc);
 	XDestroyWindow(dis, win);
 	XCloseDisplay(dis);
+	delete model;
 }
 
 void GameDisplay::play() { 
 	XEvent event;
 	KeySym key;
 	char text[255];
-	int x = 50;
 	bool done = false;
-	while(1) {
-		if(done) { break; }
+	Action a;
+	while(!done) {
+		update();
+		a = Action::NONE;
 		XNextEvent(dis, &event);
 		if(event.type==Expose && event.xexpose.count==0) {
-			update();
 		}
 		if(event.type==KeyPress&&XLookupString(&event.xkey,text,255,&key,0)==1) {
 			switch(text[0]) {
 				case 'q': done = true; break;
+				case 'a': a = Action::MOVE_LEFT; break;
+				case 'd': a = Action::MOVE_RIGHT; break;
+				case 'w': a = Action::ROTATE; break;
+				case 's': break;
 				default: break;
 			}
 		}
 		if(event.type==ButtonPress) {
-			cout << "You pressed a button at" << endl;
 		}
+		model->step(a);
 		XClearWindow(dis, win);
-		drawBox("red",x,50); x+=BOX_HEIGHT;
-		usleep(100000);
 	}
+	delete model;
 }
 
 void GameDisplay::update() {
@@ -83,7 +87,7 @@ void GameDisplay::update() {
 		for(int j = 0; j < cols; j++) {
 			sqr = model->get_SQUARE(i,j);
 			if(sqr) {
-				drawBox(sqr->get_COLOUR(), i*BOX_HEIGHT, j*BOX_WIDTH);
+				drawBox(sqr->get_COLOUR(), i*myconsts.BOX_HEIGHT, j*myconsts.BOX_WIDTH);
 			}
 		}
 	}	
@@ -99,7 +103,7 @@ unsigned long int GameDisplay::get_colors(const char * color) {
 
 void GameDisplay::drawBox(string colour, int r, int c) {
 	XSetForeground(dis, gc, get_colors(colour.c_str()));
-	XFillRectangle(dis, win, gc, c, r, BOX_WIDTH, BOX_HEIGHT);
+	XFillRectangle(dis, win, gc, c, r, myconsts.BOX_WIDTH, myconsts.BOX_HEIGHT);
 	
 }
 

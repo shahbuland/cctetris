@@ -2,11 +2,10 @@
 #define GAME_H
 
 #include <vector>
-#include "action.h"
 #include "blocks.h"
 #include "square.h"
 
-const int SCORE_FOR_LINE = 10;
+enum class Action { NONE, ROTATE, MOVE_LEFT, MOVE_RIGHT};
 
 class Game {
 	std::vector<std::vector<Square*>> board;
@@ -21,12 +20,14 @@ class Game {
 	public:
 	Game(int height, int width);
 	~Game();
-	void step(Action & a); // in charge of calling fall on active object
-	void fall(int r, int c); // makes square at r,c fall one unit (assumes this is valid)
+	void step(Action a); // in charge of calling fall on active object
+	// Obvious getters
 	const int get_HEIGHT();
 	const int get_WIDTH();
 	const int get_SCORE();
+	// Getter and setter for square
 	Square * get_SQUARE(int r, int c);
+	void set_SQUARE(int r, int c, Square * sqr);
 };
 
 #endif

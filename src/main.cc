@@ -4,11 +4,11 @@
 
 using namespace std;
 
-const int HEIGHT = 1000;
-const int WIDTH = 500;
+Constants myconsts;
 
 int main() {
-	init_constants();
-	GameDisplay * display = new GameDisplay(HEIGHT, WIDTH);
+	myconsts.init_constants();
+	GameDisplay * display = new GameDisplay(myconsts.HEIGHT, myconsts.WIDTH);
 	display->play();
+	delete display;
 }

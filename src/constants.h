@@ -6,13 +6,37 @@
 
 using namespace std;
 
-// Names of blocks, colours associated and shapes associated
-string BlockNames[7] = {"I","L","RL","Z","RZ","S","T"};
-map<string, string> BlockColours;
-map<string, vector<vector<int>>> BlockShapes;
+// Wrapper class that contains all required constants
+class Constants {
+	public:
+	// Names of blocks, colours associated and shapes associated
 
-// definitions
+	vector<string> BlockNames;
+	map<string, string> BlockColours;
+	map<string, vector<vector<int>>> BlockShapes;
 
-void init_constants();
+	// Board width, height (in terms of squares not pixels)
 
+	const int HEIGHT = 60;
+	const int WIDTH = 20;
+
+	// Square size
+
+	const int BOX_WIDTH = 10;
+	const int BOX_HEIGHT = 10;
+
+	// Max block width and height (max width or height any type of blick may have)
+
+	const int MAX_BLOCK_HEIGHT = 4;
+	const int MAX_BLOCK_WIDTH = 4;
+
+	// Score from forming a line
+
+	const int SCORE_FOR_LINE = 10;
+
+	// definitions
+
+	void init_constants();
+
+};
 #endif

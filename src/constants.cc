@@ -1,6 +1,7 @@
 #include "constants.h"
 
-void init_constants() {
+void Constants::init_constants() {
+	BlockNames = {"I","L","RL","Z","RZ","S","T"};
 	// Colours
 	BlockColours["I"] = "Cyan";
 	BlockColours["L"] = "Dark Blue";
