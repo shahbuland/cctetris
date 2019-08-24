@@ -18,4 +18,4 @@ To setup:
 1. Install Xserver (I use XMing)
 2. Run command ``export Display=:0``
 3. Cd into folder with game from terminal
-4. run ``./tetris`` command in terminal
+4. run ``./tetris`` command in terminal (run ``make`` if executable isn't there)
